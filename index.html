@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гар урчуудын баг — Гэрийн засвар</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --main: #3aa8c8;
+  --accent: #f07840;
+  --bg: #fafaf7;
+  --text: #2c3e50;
+  --muted: #7a8fa6;
+  --border: #dce8f0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* NAV */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.nav-logo {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--main);
+}
+
+.btn-orange {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity .2s, transform .1s;
+}
+.btn-orange:hover { opacity: .88; transform: translateY(-1px); }
+.btn-orange:active { transform: translateY(0); }
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #e8f4fd 0%, #fef9f6 100%);
+  text-align: center;
+  padding: 72px 24px 80px;
+}
+
+.hero-emoji { font-size: 4rem; display: block; margin-bottom: 18px; }
+
+.hero-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.35;
+  max-width: 640px;
+  margin: 0 auto 18px;
+}
+.hero h1 em { color: var(--main); font-style: normal; }
+
+.hero-desc {
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto 32px;
+  font-size: 1.05rem;
+}
+
+/* FLOW SECTION */
+.flow-section {
+  padding: 72px 24px 80px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.section-heading { text-align: center; margin-bottom: 8px; }
+.section-heading h2 { font-size: 1.55rem; font-weight: 800; }
+.section-sub {
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 40px;
+  font-size: 0.95rem;
+}
+
+.step-wrapper { display: flex; flex-direction: column; gap: 16px; }
+
+.step-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.step-card:hover { box-shadow: 0 4px 18px rgba(58,168,200,.1); }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.step-bubble {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--main);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: background .3s;
+}
+.step-bubble.done { background: #27ae60; }
+
+.step-question { font-weight: 700; font-size: 1.05rem; }
+.step-hint { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color .15s, background .15s, transform .1s;
+  user-select: none;
+}
+.chip:hover { border-color: var(--main); background: #f0f9fd; transform: translateY(-1px); }
+.chip.selected { border-color: var(--main); background: #e6f6fc; font-weight: 600; }
+
+.step-hidden {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height .5s ease, opacity .4s ease;
+}
+.step-hidden.visible {
+  max-height: 600px;
+  opacity: 1;
+}
+
+/* CONTACT SECTION */
+.contact-section {
+  background: #fff;
+  padding: 72px 24px 80px;
+}
+
+.contact-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.summary-banner {
+  background: #e6f6fc;
+  border: 1px solid #b3dff0;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-bottom: 28px;
+  line-height: 1.8;
+}
+.summary-banner .summary-label { font-weight: 700; color: var(--main); }
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.form-group label { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+.form-group input,
+.form-group textarea {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+  resize: vertical;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--main);
+  box-shadow: 0 0 0 3px rgba(58,168,200,.12);
+}
+
+.btn-submit {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity .2s, transform .1s;
+}
+.btn-submit:hover { opacity: .88; transform: translateY(-1px); }
+
+.form-note {
+  text-align: center;
+  font-size: 0.84rem;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* SERVICES */
+.services-section {
+  padding: 72px 24px 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.service-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 18px;
+  text-align: center;
+  transition: box-shadow .2s, transform .15s;
+}
+.service-card:hover { box-shadow: 0 6px 20px rgba(58,168,200,.12); transform: translateY(-3px); }
+.service-card .icon { font-size: 2rem; margin-bottom: 10px; }
+.service-card .name { font-weight: 700; font-size: 0.95rem; }
+
+/* PRODUCTS */
+.products-section {
+  background: linear-gradient(180deg, #fffdf5 0%, #fff8f0 100%);
+  border-top: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
+  padding: 72px 24px 80px;
+}
+
+.products-inner { max-width: 900px; margin: 0 auto; }
+
+.product-main-card {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(240,120,64,.08);
+}
+
+.product-main-card .card-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+
+.card-image-area {
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 16px;
+  min-height: 280px;
+  align-items: stretch;
+}
+.card-image-area img {
+  width: 50%;
+  height: 100%;
+  min-height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+
+.card-content { padding: 32px 28px; }
+
+.product-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--accent), #f7a060);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+
+.product-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.product-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 18px; }
+
+.feature-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+.feature-list li::before {
+  content: "✓";
+  color: #27ae60;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.product-tag {
+  background: #f0f9fd;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.product-note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.coming-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.coming-card {
+  background: #fff;
+  border: 1.5px dashed var(--border);
+  border-radius: 14px;
+  padding: 24px 18px;
+  text-align: center;
+  opacity: .75;
+}
+.coming-card .icon { font-size: 1.8rem; margin-bottom: 8px; }
+.coming-card .name { font-size: 0.88rem; font-weight: 600; color: var(--muted); margin-bottom: 6px; }
+.coming-badge {
+  display: inline-block;
+  background: #f3f3f3;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 10px;
+}
+
+/* FOOTER */
+footer {
+  background: var(--text);
+  color: rgba(255,255,255,.7);
+  text-align: center;
+  padding: 28px 24px;
+  font-size: 0.88rem;
+}
+footer a { color: rgba(255,255,255,.85); }
+footer a:hover { color: #fff; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .form-grid-2 { grid-template-columns: 1fr; }
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .coming-grid { grid-template-columns: 1fr; }
+  .product-main-card .card-top { grid-template-columns: 1fr; }
+  .card-image-area {
+    flex-direction: column;
+    min-height: unset;
+    padding: 12px;
+  }
+  .card-image-area img {
+    width: 100%;
+    min-height: 180px;
+  }
+}
+@media (max-width: 480px) {
+  .services-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">🔨 Гар урчуудын баг</span>
+  <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Захиалга өгөх</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-emoji">🏡</span>
+  <span class="hero-badge">Мэргэжлийн засварчид · Улаанбаатар</span>
+  <h1>Гэрийн засвараа <em>найдвартай</em> хүнд даатгаарай</h1>
+  <p class="hero-desc">Цахилгаан, сантехник, дотор засал — ямар ч асуудлыг шийднэ. Та зөвхөн бидэнд хэлэхэд л хангалттай.</p>
+  <button class="btn-orange" onclick="document.getElementById('fs').scrollIntoView({behavior:'smooth'})">Одоо захиалах →</button>
+</section>
+
+<!-- STEP FLOW -->
+<section id="fs" class="flow-section">
+  <div class="section-heading"><h2>Юу засуулах гэж байна вэ?</h2></div>
+  <p class="section-sub">3 асуултад хариулна уу — бид таны захиалгыг хүлээн авна.</p>
+
+  <div class="step-wrapper">
+
+    <!-- STEP 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-bubble" id="bubble1">1</div>
+        <div>
+          <div class="step-question">Ямар өрөөнд асуудал гарсан бэ?</div>
+          <div class="step-hint">Нэг буюу хэд хэдэн өрөө сонгож болно</div>
+        </div>
+      </div>
+      <div class="chips" id="chips1">
+        <div class="chip" data-val="🛁 Угаалгын өрөө" onclick="toggleChip(this,1)">🛁 Угаалгын өрөө</div>
+        <div class="chip" data-val="🍳 Гал тогоо" onclick="toggleChip(this,1)">🍳 Гал тогоо</div>
+        <div class="chip" data-val="🛏 Унтлагын өрөө" onclick="toggleChip(this,1)">🛏 Унтлагын өрөө</div>
+        <div class="chip" data-val="🛋 Зочны өрөө" onclick="toggleChip(this,1)">🛋 Зочны өрөө</div>
+        <div class="chip" data-val="🚪 Коридор" onclick="toggleChip(this,1)">🚪 Коридор</div>
+        <div class="chip" data-val="🏗 Бусад" onclick="toggleChip(this,1)">🏗 Бусад</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-card step-hidden" id="step2card">
+      <div class="step-header">
+        <div class="step-bubble" id="bubble2">2</div>
+        <div>
+          <div class="step-question">Ямар төрлийн засвар хэрэгтэй вэ?</div>
+          <div class="step-hint">Тохирох зүйлийг сонгоно уу</div>
+        </div>
+      </div>
+      <div class="chips" id="chips2">
+        <div class="chip" data-val="⚡ Цахилгаан" onclick="pickChip(this,2)">⚡ Цахилгаан</div>
+        <div class="chip" data-val="🚿 Усан хоолой" onclick="pickChip(this,2)">🚿 Усан хоолой</div>
+        <div class="chip" data-val="🎨 Будгийн ажил" onclick="pickChip(this,2)">🎨 Будгийн ажил</div>
+        <div class="chip" data-val="🪵 Мод / Тавилга" onclick="pickChip(this,2)">🪵 Мод / Тавилга</div>
+        <div class="chip" data-val="🪟 Цонх / Хаалга" onclick="pickChip(this,2)">🪟 Цонх / Хаалга</div>
+        <div class="chip" data-val="🔧 Бусад засвар" onclick="pickChip(this,2)">🔧 Бусад засвар</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-card step-hidden" id="step3card">
+      <div class="step-header">
+        <div class="step-bubble" id="bubble3">3</div>
+        <div>
+          <div class="step-question">Хэр яаралтай вэ?</div>
+          <div class="step-hint">Бид цагийг тань хүндэтгэнэ</div>
+        </div>
+      </div>
+      <div class="chips" id="chips3">
+        <div class="chip" data-val="🚨 Өнөөдөр яаралтай" onclick="pickChip(this,3)">🚨 Өнөөдөр яаралтай</div>
+        <div class="chip" data-val="📅 Энэ долоо хоногт" onclick="pickChip(this,3)">📅 Энэ долоо хоногт</div>
+        <div class="chip" data-val="🗓 Энэ сард болно" onclick="pickChip(this,3)">🗓 Энэ сард болно</div>
+        <div class="chip" data-val="💬 Эхлээд зөвлөлдье" onclick="pickChip(this,3)">💬 Эхлээд зөвлөлдье</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="cs" class="contact-section">
+  <div class="contact-inner">
+    <div class="section-heading"><h2>Холбоо барих мэдээлэл</h2></div>
+    <p class="section-sub">Та дараах мэдээллийг бөглөнө үү. 24 цагийн дотор холбогдоно.</p>
+
+    <div class="summary-banner" id="summaryBanner">
+      <span class="summary-label">📋 Таны захиалга：</span>
+      <span id="summaryText">Сонголт хийгдээгүй байна</span>
+    </div>
+
+    <form onsubmit="return false;">
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Нэр</label>
+          <input type="text" placeholder="Таны нэр">
+        </div>
+        <div class="form-group">
+          <label>Утасны дугаар</label>
+          <input type="tel" placeholder="+976 ···· ····">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Хаяг</label>
+        <input type="text" placeholder="Дүүрэг, хороо, байр">
+      </div>
+      <div class="form-group">
+        <label>Нэмэлт тайлбар <span style="color:var(--muted);font-weight:400;">(заавал биш)</span></label>
+        <textarea rows="4" placeholder="Асуудлын талаар дэлгэрэнгүй бичиж болно..."></textarea>
+      </div>
+      <button class="btn-submit">Захиалга илгээх →</button>
+    </form>
+    <p class="form-note">📞 Утасны дугаараар ч холбогдож болно</p>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section style="padding:72px 24px 80px;">
+  <div class="services-section" style="padding:0;">
+    <div class="section-heading"><h2>Бид юу хийдэг вэ?</h2></div>
+    <p class="section-sub" style="margin-bottom:36px;">Мэргэжлийн засвар үйлчилгээ</p>
+    <div class="services-grid">
+      <div class="service-card"><div class="icon">⚡</div><div class="name">Цахилгаан</div></div>
+      <div class="service-card"><div class="icon">🚿</div><div class="name">Сантехник</div></div>
+      <div class="service-card"><div class="icon">🎨</div><div class="name">Будгийн ажил</div></div>
+      <div class="service-card"><div class="icon">🪵</div><div class="name">Мод, тавилга</div></div>
+      <div class="service-card"><div class="icon">🪟</div><div class="name">Цонх, хаалга</div></div>
+      <div class="service-card"><div class="icon">🏠</div><div class="name">Шал, тааз</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="products-inner">
+    <div class="section-heading"><h2>Одоо дэлгэрч байгаа шинэ бүтээгдэхүүн 🌟</h2></div>
+    <p class="section-sub" style="margin-bottom:36px;">Засвараас гадна гэрийг илүү тав тухтай болгох бүтээгдэхүүнийг бид танилцуулна.</p>
+
+    <div class="product-main-card">
+      <div class="card-top">
+        <div class="card-image-area">
+          <img src="images/bidet-product.png" alt="Цахилгаангүй биде — бүтээгдэхүүн">
+          <img src="images/bidet-installed.png" alt="Цахилгаангүй биде — суурилуулсан байдал">
+        </div>
+        <div class="card-content">
+          <span class="product-badge">✨ ШИНЭ · POPULAR</span>
+          <div class="product-name">Цахилгаангүй биде<br>(Bidet attachment)</div>
+          <div class="product-sub">Угаалгын өрөөний хамгийн их хэрэгцээтэй шинэчлэл</div>
+          <ul class="feature-list">
+            <li>Цахилгаан огт шаардлагагүй — усны даралтаар л ажилладаг</li>
+            <li>Одоо байгаа суултуур дээр хялбар суурилуулна — ердөө 15 минут</li>
+            <li>Цаасны зарцуулалтыг эрс бууруулна — гэр бүлд хэмнэлттэй</li>
+            <li>Хүүхэд, ахмад настанд аль алинд нь тохиромжтой</li>
+          </ul>
+          <div class="product-tags">
+            <span class="product-tag">💧 Цахилгаангүй</span>
+            <span class="product-tag">⏱ 15 мин суурилуулалт</span>
+            <span class="product-tag">♻️ Эко-найрсаг</span>
+            <span class="product-tag">👨‍👩‍👧 Гэр бүлд тохиромжтой</span>
+          </div>
+          <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
+          <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coming-grid">
+      <div class="coming-card">
+        <div class="icon">💡</div>
+        <div class="name">Хөдөлгөөн мэдрэгч гэрэл</div>
+        <span class="coming-badge">Удахгүй</span>
+      </div>
+      <div class="coming-card">
+        <div class="icon">🪥</div>
+        <div class="name">Ухаалаг угаалтуур</div>
+        <span class="coming-badge">Удахгүй</span>
+      </div>
+      <div class="coming-card">
+        <div class="icon">🔒</div>
+        <div class="name">Смарт цоож</div>
+        <span class="coming-badge">Удахгүй</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2024 Гар урчуудын баг · Улаанбаатар · <a href="tel:+97600000000">+976 ···· ····</a>
+</footer>
+
+<script>
+const state = { rooms: [], type: '', urgency: '' };
+
+function updateSummary() {
+  const parts = [];
+  if (state.rooms.length) parts.push('📍 ' + state.rooms.join(', '));
+  if (state.type) parts.push('🔧 ' + state.type);
+  if (state.urgency) parts.push('⏰ ' + state.urgency);
+  document.getElementById('summaryText').textContent =
+    parts.length ? parts.join(' / ') : 'Сонголт хийгдээгүй байна';
+}
+
+function toggleChip(el, step) {
+  el.classList.toggle('selected');
+  const val = el.dataset.val;
+  if (el.classList.contains('selected')) {
+    state.rooms.push(val);
+  } else {
+    state.rooms = state.rooms.filter(v => v !== val);
+  }
+  updateSummary();
+  if (state.rooms.length > 0) {
+    document.getElementById('step2card').classList.add('visible');
+  } else {
+    document.getElementById('step2card').classList.remove('visible');
+    document.getElementById('step3card').classList.remove('visible');
+    document.getElementById('bubble2').textContent = '2';
+    document.getElementById('bubble2').classList.remove('done');
+  }
+}
+
+function pickChip(el, step) {
+  const parent = el.closest('.chips');
+  parent.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+
+  if (step === 2) {
+    state.type = el.dataset.val;
+    document.getElementById('bubble2').textContent = '✓';
+    document.getElementById('bubble2').classList.add('done');
+    document.getElementById('step3card').classList.add('visible');
+  } else if (step === 3) {
+    state.urgency = el.dataset.val;
+    document.getElementById('bubble3').textContent = '✓';
+    document.getElementById('bubble3').classList.add('done');
+    setTimeout(() => {
+      document.getElementById('cs').scrollIntoView({ behavior: 'smooth' });
+    }, 400);
+  }
+  updateSummary();
+}
+</script>
+</body>
+</html>
