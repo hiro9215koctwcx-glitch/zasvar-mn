@@ -306,26 +306,18 @@ nav {
   background: #f5f3ee;
   padding: 1.5rem;
   border-radius: 16px 16px 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
   align-items: center;
-  justify-items: center;
 }
 .card-images img {
   width: 100%;
-  max-height: 300px;
+  max-width: 600px;
   height: auto;
   object-fit: contain;
   display: block;
   border-radius: 10px;
-}
-.card-images:has(img:only-child) {
-  grid-template-columns: 1fr;
-}
-.card-images img:only-child {
-  max-width: 420px;
-  max-height: 380px;
 }
 
 .card-content { padding: 1.25rem 1.5rem; }
