@@ -292,35 +292,42 @@ nav {
   padding: 72px 24px 80px;
 }
 
-.products-inner { max-width: 780px; margin: 0 auto; }
+.products-inner { max-width: 900px; margin: 0 auto; }
 
-.product-card {
+.product-main-card {
   background: #fff;
-  border-radius: 16px;
-  max-width: 780px;
-  margin: 0 auto 2rem auto;
-  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(240,120,64,.08);
 }
 
-.card-images {
-  background: #f5f3ee;
-  padding: 1.5rem;
-  border-radius: 16px 16px 0 0;
+.product-main-card .card-top {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  gap: 0;
+}
+
+.card-image-area {
+  background: #f5f5f5;
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+  padding: 16px;
+  max-height: 320px;
+  align-items: stretch;
 }
-.card-images img {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  object-fit: contain;
-  display: block;
+.card-image-area img {
+  width: 50%;
+  height: 100%;
+  max-height: 288px;
+  object-fit: cover;
   border-radius: 10px;
+  display: block;
 }
 
-.card-content { padding: 1.25rem 1.5rem; }
+.card-content { padding: 32px 28px; }
 
 .product-badge {
   display: inline-block;
@@ -379,6 +386,62 @@ nav {
   margin-top: 10px;
 }
 
+.product-secondary-card {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(240,120,64,.08);
+}
+.product-secondary-card .banner-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+.product-secondary-card .card-bottom {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+.product-secondary-card .card-side-image {
+  background: #f5f5f5;
+  max-height: 320px;
+  overflow: hidden;
+}
+.product-secondary-card .card-side-image img {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.product-single-card {
+  background: #fff;
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(240,120,64,.08);
+}
+.product-single-card .card-top {
+  display: grid;
+  grid-template-columns: 40% 60%;
+}
+.product-single-card .card-image-area {
+  background: #f5f5f5;
+  max-height: 320px;
+  overflow: hidden;
+}
+.product-single-card .card-image-area img {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
 .coming-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -421,11 +484,26 @@ footer a:hover { color: #fff; }
   .form-grid-2 { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .coming-grid { grid-template-columns: 1fr; }
-  .card-content { padding: 1rem 1.25rem; }
+  .product-main-card .card-top { grid-template-columns: 1fr; }
+  .card-image-area {
+    flex-direction: column;
+    max-height: unset;
+    padding: 12px;
+  }
+  .card-image-area img {
+    width: 100%;
+    max-height: 200px;
+  }
+  .product-secondary-card .card-bottom { grid-template-columns: 1fr; }
+  .product-secondary-card .banner-image { height: 160px; }
+  .product-secondary-card .card-side-image { max-height: 220px; }
+  .product-secondary-card .card-side-image img { max-height: 220px; }
+  .product-single-card .card-top { grid-template-columns: 1fr; }
+  .product-single-card .card-image-area { max-height: 220px; }
+  .product-single-card .card-image-area img { max-height: 220px; }
 }
 @media (max-width: 480px) {
   .services-grid { grid-template-columns: 1fr; }
-  .card-images { flex-direction: column; gap: 0.75rem; }
 }
 </style>
 </head>
@@ -569,80 +647,86 @@ footer a:hover { color: #fff; }
     <div class="section-heading"><h2>Одоо дэлгэрч байгаа шинэ бүтээгдэхүүн 🌟</h2></div>
     <p class="section-sub" style="margin-bottom:36px;">Засвараас гадна гэрийг илүү тав тухтай болгох бүтээгдэхүүнийг бид танилцуулна.</p>
 
-    <div class="product-card">
-      <div class="card-images">
-        <img src="images/bidet-product.png" alt="Цахилгаангүй биде — бүтээгдэхүүн">
-        <img src="images/bidet-installed.png" alt="Цахилгаангүй биде — суурилуулсан байдал">
-      </div>
-      <div class="card-content">
-        <span class="product-badge">✨ ШИНЭ · POPULAR</span>
-        <div class="product-name">Цахилгаангүй биде (Bidet attachment)</div>
-        <div class="product-sub">Угаалгын өрөөний хамгийн их хэрэгцээтэй шинэчлэл</div>
-        <ul class="feature-list">
-          <li>Цахилгаан огт шаардлагагүй — усны даралтаар л ажилладаг</li>
-          <li>Одоо байгаа суултуур дээр хялбар суурилуулна — ердөө 15 минут</li>
-          <li>Цаасны зарцуулалтыг эрс бууруулна — гэр бүлд хэмнэлттэй</li>
-          <li>Хүүхэд, ахмад настанд аль алинд нь тохиромжтой</li>
-        </ul>
-        <div class="product-tags">
-          <span class="product-tag">💧 Цахилгаангүй</span>
-          <span class="product-tag">⏱ 15 мин суурилуулалт</span>
-          <span class="product-tag">♻️ Эко-найрсаг</span>
-          <span class="product-tag">👨‍👩‍👧 Гэр бүлд тохиромжтой</span>
+    <div class="product-main-card">
+      <div class="card-top">
+        <div class="card-image-area">
+          <img src="images/bidet-product.png" alt="Цахилгаангүй биде — бүтээгдэхүүн">
+          <img src="images/bidet-installed.png" alt="Цахилгаангүй биде — суурилуулсан байдал">
         </div>
-        <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
-        <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        <div class="card-content">
+          <span class="product-badge">✨ ШИНЭ · POPULAR</span>
+          <div class="product-name">Цахилгаангүй биде<br>(Bidet attachment)</div>
+          <div class="product-sub">Угаалгын өрөөний хамгийн их хэрэгцээтэй шинэчлэл</div>
+          <ul class="feature-list">
+            <li>Цахилгаан огт шаардлагагүй — усны даралтаар л ажилладаг</li>
+            <li>Одоо байгаа суултуур дээр хялбар суурилуулна — ердөө 15 минут</li>
+            <li>Цаасны зарцуулалтыг эрс бууруулна — гэр бүлд хэмнэлттэй</li>
+            <li>Хүүхэд, ахмад настанд аль алинд нь тохиромжтой</li>
+          </ul>
+          <div class="product-tags">
+            <span class="product-tag">💧 Цахилгаангүй</span>
+            <span class="product-tag">⏱ 15 мин суурилуулалт</span>
+            <span class="product-tag">♻️ Эко-найрсаг</span>
+            <span class="product-tag">👨‍👩‍👧 Гэр бүлд тохиромжтой</span>
+          </div>
+          <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
+          <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        </div>
       </div>
     </div>
 
     <!-- PRODUCT 2: Laundry Rack -->
-    <div class="product-card">
-      <div class="card-images">
-        <img src="images/laundry-rack-banner.jpg" alt="Таазны хувцас хатаагч — баннер">
-        <img src="images/laundry-rack-product.jpg" alt="Таазны хувцас хатаагч — бүтээгдэхүүн">
-      </div>
-      <div class="card-content">
-        <span class="product-badge">✨ ШИНЭ · POPULAR</span>
-        <div class="product-name">Таазны хувцас хатаагч</div>
-        <div class="product-sub">Орон зай хэмнэнэ — хувцсаа цэвэрхэн хатааya</div>
-        <ul class="feature-list">
-          <li>Өндрийг тохируулах боломжтой</li>
-          <li>Даац сайтай, хүчтэй</li>
-          <li>Зэвэрдэггүй бат бөх материал</li>
-          <li>Суурилуулалт хийж өгнө</li>
-        </ul>
-        <div class="product-tags">
-          <span class="product-tag">🚚 Хүргэлттэй</span>
-          <span class="product-tag">🛡 Баталгаатай</span>
-          <span class="product-tag">⚡ Хурдан үйлчилгээ</span>
+    <div class="product-secondary-card">
+      <img class="banner-image" src="images/laundry-rack-banner.jpg" alt="Таазны хувцас хатаагч — баннер">
+      <div class="card-bottom">
+        <div class="card-side-image">
+          <img src="images/laundry-rack-product.jpg" alt="Таазны хувцас хатаагч — бүтээгдэхүүн">
         </div>
-        <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
-        <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        <div class="card-content">
+          <span class="product-badge">✨ ШИНЭ · POPULAR</span>
+          <div class="product-name">Таазны хувцас хатаагч</div>
+          <div class="product-sub">Орон зай хэмнэнэ — хувцсаа цэвэрхэн хатааya</div>
+          <ul class="feature-list">
+            <li>Өндрийг тохируулах боломжтой</li>
+            <li>Даац сайтай, хүчтэй</li>
+            <li>Зэвэрдэггүй бат бөх материал</li>
+            <li>Суурилуулалт хийж өгнө</li>
+          </ul>
+          <div class="product-tags">
+            <span class="product-tag">🚚 Хүргэлттэй</span>
+            <span class="product-tag">🛡 Баталгаатай</span>
+            <span class="product-tag">⚡ Хурдан үйлчилгээ</span>
+          </div>
+          <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
+          <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        </div>
       </div>
     </div>
 
     <!-- PRODUCT 3: Smart Outlet -->
-    <div class="product-card">
-      <div class="card-images">
-        <img src="images/smart-outlet-product.jpg" alt="Ухаалаг залгуур — бүтээгдэхүүн">
-      </div>
-      <div class="card-content">
-        <span class="product-badge">✨ ШИНЭ</span>
-        <div class="product-name">Ухаалаг залгуур</div>
-        <div class="product-sub">Гал тогооны өрөөг илүү ухаалаг болгоё</div>
-        <ul class="feature-list">
-          <li>Хананд суурилуулах загвар — ширээн дээр зай эзлэхгүй</li>
-          <li>Дугуй дизайн — орчин үеийн</li>
-          <li>Олон залгуур нэг самбарт — тохиромжтой</li>
-          <li>Суурилуулалт хийж өгнө</li>
-        </ul>
-        <div class="product-tags">
-          <span class="product-tag">⚡ Цахилгаан</span>
-          <span class="product-tag">🎨 Орчин үеийн дизайн</span>
-          <span class="product-tag">🔧 Суурилуулалттай</span>
+    <div class="product-single-card">
+      <div class="card-top">
+        <div class="card-image-area">
+          <img src="images/smart-outlet-product.jpg" alt="Ухаалаг залгуур — бүтээгдэхүүн">
         </div>
-        <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
-        <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        <div class="card-content">
+          <span class="product-badge">✨ ШИНЭ</span>
+          <div class="product-name">Ухаалаг залгуур</div>
+          <div class="product-sub">Гал тогооны өрөөг илүү ухаалаг болгоё</div>
+          <ul class="feature-list">
+            <li>Хананд суурилуулах загвар — ширээн дээр зай эзлэхгүй</li>
+            <li>Дугуй дизайн — орчин үеийн</li>
+            <li>Олон залгуур нэг самбарт — тохиромжтой</li>
+            <li>Суурилуулалт хийж өгнө</li>
+          </ul>
+          <div class="product-tags">
+            <span class="product-tag">⚡ Цахилгаан</span>
+            <span class="product-tag">🎨 Орчин үеийн дизайн</span>
+            <span class="product-tag">🔧 Суурилуулалттай</span>
+          </div>
+          <button class="btn-orange" onclick="document.getElementById('cs').scrollIntoView({behavior:'smooth'})">Суурилуулах захиалга өгөх →</button>
+          <p class="product-note">📦 Бид бүтээгдэхүүн авчирч, суурилуулж өгнө</p>
+        </div>
       </div>
     </div>
 
