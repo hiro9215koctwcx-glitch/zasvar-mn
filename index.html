@@ -304,9 +304,31 @@ nav {
 }
 
 .product-main-card .card-top {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  gap: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+.product-main-card .card-image-area {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f5f3ee;
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+.product-main-card .card-image-area img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 10px;
+}
+.product-main-card .card-content {
+  flex: 1;
+  padding: 1rem 0;
 }
 
 .card-image-area {
@@ -477,8 +499,9 @@ footer a:hover { color: #fff; }
   .form-grid-2 { grid-template-columns: 1fr; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .coming-grid { grid-template-columns: 1fr; }
-  .product-main-card .card-top { grid-template-columns: 1fr; }
-  .card-image-area { flex-direction: column; padding: 12px; }
+  .product-main-card .card-top { flex-direction: column; padding: 1rem; }
+  .product-main-card .card-image-area { flex: none; width: 100%; }
+  .product-main-card .card-content { padding: 0; }
   .product-secondary-card .card-bottom { grid-template-columns: 1fr; }
   .product-secondary-card .banner-image { height: auto; }
   .product-single-card .card-top { grid-template-columns: 1fr; }
