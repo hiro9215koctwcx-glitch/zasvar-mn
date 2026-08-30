@@ -604,26 +604,27 @@ footer a:hover { color: #fff; }
       <span id="summaryText">Сонголт хийгдээгүй байна</span>
     </div>
 
-    <form onsubmit="return false;">
+    <form id="orderForm" onsubmit="return false;">
       <div class="form-grid-2">
         <div class="form-group">
           <label>Нэр</label>
-          <input type="text" placeholder="Таны нэр">
+          <input type="text" id="fName" placeholder="Таны нэр">
         </div>
         <div class="form-group">
           <label>Утасны дугаар</label>
-          <input type="tel" placeholder="+976 ···· ····">
+          <input type="tel" id="fPhone" placeholder="+976 ···· ····">
         </div>
       </div>
       <div class="form-group">
         <label>Хаяг</label>
-        <input type="text" placeholder="Дүүрэг, хороо, байр">
+        <input type="text" id="fAddress" placeholder="Дүүрэг, хороо, байр">
       </div>
       <div class="form-group">
         <label>Нэмэлт тайлбар <span style="color:var(--muted);font-weight:400;">(заавал биш)</span></label>
-        <textarea rows="4" placeholder="Асуудлын талаар дэлгэрэнгүй бичиж болно..."></textarea>
+        <textarea rows="4" id="fMessage" placeholder="Асуудлын талаар дэлгэрэнгүй бичиж болно..."></textarea>
       </div>
-      <button class="btn-submit">Захиалга илгээх →</button>
+      <button class="btn-submit" id="sendBtn">Захиалга илгээх →</button>
+      <p id="formStatus" style="display:none;"></p>
     </form>
     <p class="form-note">📞 Утасны дугаараар ч холбогдож болно</p>
   </div>
@@ -810,6 +811,55 @@ function pickChip(el, step) {
   }
   updateSummary();
 }
+</script>
+
+<!-- お問い合わせフォームのメール送信 (EmailJS) -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init({ publicKey: '_uiBO-KfPgkKdN2WA' });
+
+    var sendBtn = document.getElementById('sendBtn');
+    var statusEl = document.getElementById('formStatus');
+
+    function showStatus(message, color) {
+      statusEl.textContent = message;
+      statusEl.style.color = color;
+      statusEl.style.display = 'block';
+    }
+
+    sendBtn.addEventListener('click', function () {
+      var name = document.getElementById('fName').value.trim();
+      var phone = document.getElementById('fPhone').value.trim();
+      var address = document.getElementById('fAddress').value.trim();
+      var message = document.getElementById('fMessage').value.trim();
+      var summaryEl = document.getElementById('summaryText');
+      var service = summaryEl ? summaryEl.textContent.trim() : '';
+
+      if (!name || !phone) {
+        showStatus('Нэр болон утасны дугаараа бөглөнө үү.', '#e53935');
+        return;
+      }
+
+      sendBtn.disabled = true;
+      showStatus('Илгээж байна...', 'var(--muted)');
+
+      emailjs.send('service_y1oa4qn', 'template_p7v6ki4', {
+        name: name,
+        phone: phone,
+        address: address,
+        message: message,
+        service: service
+      }).then(function () {
+        showStatus('Баярлалаа! Захиалга амжилттай илгээгдлээ. 24 цагийн дотор холбогдоно.', '#43a047');
+        document.getElementById('orderForm').reset();
+        sendBtn.disabled = false;
+      }, function () {
+        showStatus('Уучлаарай, алдаа гарлаа. Утсаар холбогдоно уу.', '#e53935');
+        sendBtn.disabled = false;
+      });
+    });
+  })();
 </script>
 </body>
 </html>
