@@ -510,6 +510,12 @@ footer a:hover { color: #fff; }
   .services-grid { grid-template-columns: 1fr; }
 }
 </style>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3aa8c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Гэрийн засвар">
+  <link rel="apple-touch-icon" href="images/icon-192.png">
 </head>
 <body>
 
@@ -860,6 +866,15 @@ function pickChip(el, step) {
       });
     });
   })();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function (err) {
+      console.log('SW registration failed:', err);
+    });
+  });
+}
 </script>
 </body>
 </html>

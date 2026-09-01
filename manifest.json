@@ -1,0 +1,25 @@
+{
+  "name": "Гар урчуудын баг — Гэрийн засвар",
+  "short_name": "Гэрийн засвар",
+  "description": "Цахилгаан, сантехник, дотор засал — гэрийн засварын мэргэжлийн баг.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#3aa8c8",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
