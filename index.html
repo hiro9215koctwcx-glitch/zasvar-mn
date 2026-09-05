@@ -647,6 +647,10 @@ footer a:hover { color: #fff; }
         </div>
       </div>
       <div class="form-group">
+        <label>И-мэйл хаяг</label>
+        <input type="email" id="fEmail" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
         <label>Хаяг</label>
         <input type="text" id="fAddress" placeholder="Дүүрэг, хороо, байр">
       </div>
@@ -865,13 +869,19 @@ function pickChip(el, step) {
     sendBtn.addEventListener('click', function () {
       var name = document.getElementById('fName').value.trim();
       var phone = document.getElementById('fPhone').value.trim();
+      var emailInput = document.getElementById('fEmail');
+      var email = emailInput.value.trim();
       var address = document.getElementById('fAddress').value.trim();
       var message = document.getElementById('fMessage').value.trim();
       var summaryEl = document.getElementById('summaryText');
       var service = summaryEl ? summaryEl.textContent.trim() : '';
 
-      if (!name || !phone) {
-        showStatus('Нэр болон утасны дугаараа бөглөнө үү.', '#e53935');
+      if (!name || !phone || !email) {
+        showStatus('Нэр, утасны дугаар, и-мэйл хаягаа бөглөнө үү.', '#e53935');
+        return;
+      }
+      if (!emailInput.checkValidity()) {
+        showStatus('И-мэйл хаягаа зөв оруулна уу.', '#e53935');
         return;
       }
 
@@ -881,6 +891,7 @@ function pickChip(el, step) {
       emailjs.send('service_y1oa4qn', 'template_p7v6ki4', {
         name: name,
         phone: phone,
+        email: email,
         address: address,
         message: message,
         service: service
