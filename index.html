@@ -900,9 +900,12 @@ function pickChip(el, step) {
     var messengerBtn = document.getElementById('messengerBtn');
     if (!messengerBtn) return;
 
-    messengerBtn.addEventListener('click', function () {
-      var name = document.getElementById('fName').value.trim();
-      var phone = document.getElementById('fPhone').value.trim();
+    var fName = document.getElementById('fName');
+    var fPhone = document.getElementById('fPhone');
+
+    function updateHref() {
+      var name = fName.value.trim();
+      var phone = fPhone.value.trim();
 
       var parts = ['Сайн байна уу! Zasvar-mn сайтаас байна.'];
       if (name) parts.push('Нэр: ' + name + '.');
@@ -910,7 +913,12 @@ function pickChip(el, step) {
       parts.push('Гэрийн засварын талаар зургаа доор хавсаргая 👇');
 
       messengerBtn.href = 'https://m.me/61592805029043?text=' + encodeURIComponent(parts.join(' '));
-    });
+    }
+
+    if (fName) fName.addEventListener('input', updateHref);
+    if (fPhone) fPhone.addEventListener('input', updateHref);
+
+    updateHref();
   })();
 </script>
 <script>
