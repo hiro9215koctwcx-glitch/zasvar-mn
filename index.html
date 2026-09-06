@@ -661,7 +661,7 @@ footer a:hover { color: #fff; }
       <button class="btn-submit" id="sendBtn">Захиалга илгээх →</button>
       <p id="formStatus" style="display:none;"></p>
       <p class="messenger-caption">📷 Зургаа доорх товчоор бидний баг руу шууд илгээгээрэй</p>
-      <a class="btn-messenger" id="messengerBtn" href="https://m.me/61592805029043?text=%D0%A1%D0%B0%D0%B9%D0%BD%20%D0%B1%D0%B0%D0%B9%D0%BD%D0%B0%20%D1%83%D1%83%21%20Zasvar-mn%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0%D0%B0%D1%81%20%D0%B1%D0%B0%D0%B9%D0%BD%D0%B0.%20%D0%93%D1%8D%D1%80%D0%B8%D0%B9%D0%BD%20%D0%B7%D0%B0%D1%81%D0%B2%D0%B0%D1%80%D1%8B%D0%BD%20%D1%82%D0%B0%D0%BB%D0%B0%D0%B0%D1%80%20%D0%B7%D1%83%D1%80%D0%B3%D0%B0%D0%B0%20%D0%B4%D0%BE%D0%BE%D1%80%20%D1%85%D0%B0%D0%B2%D1%81%D0%B0%D1%80%D0%B3%D0%B0%D1%8F%20%F0%9F%91%87">📷 Зургаа Messenger-ээр илгээх</a>
+      <a class="btn-messenger" id="messengerBtn" href="https://m.me/61592805029043?text=%D0%A1%D0%B0%D0%B9%D0%BD%20%D0%B1%D0%B0%D0%B9%D0%BD%D0%B0%20%D1%83%D1%83!%0AZasvar.mn%20%D1%81%D0%B0%D0%B9%D1%82%20%D0%B1%D0%B0%D0%B9%D0%BD%D0%B0.%20%D0%97%D0%B0%D1%81%D0%B2%D0%B0%D1%80%D1%8B%D0%BD%20%D0%B7%D1%83%D1%80%D0%B3%D0%B0%D0%B0%20%D0%B4%D0%BE%D0%BE%D1%80%20%D1%85%D0%B0%D0%B2%D1%81%D0%B0%D1%80%D0%B3%D0%B0%D1%8F.%20%F0%9F%91%87">📷 Зургаа Messenger-ээр илгээх</a>
       <p class="messenger-caption">Хэрэв танилцуулах цонх гарвал, дотор нь байгаа «Messenger-ээр нээх» гэснийг дарна уу</p>
     </form>
     <p class="form-note">📞 Утасны дугаараар ч холбогдож болно</p>
@@ -919,10 +919,10 @@ function pickChip(el, step) {
       var name = fName.value.trim();
       var phone = fPhone.value.trim();
 
-      var parts = ['Сайн байна уу! Zasvar-mn сайтаас байна.'];
+      var parts = ['Сайн байна уу!\nZasvar.mn сайт байна.'];
       if (name) parts.push('Нэр: ' + name + '.');
       if (phone) parts.push('Утас: ' + phone + '.');
-      parts.push('Гэрийн засварын талаар зургаа доор хавсаргая 👇');
+      parts.push('Засварын зургаа доор хавсаргая. 👇');
 
       messengerBtn.href = 'https://m.me/61592805029043?text=' + encodeURIComponent(parts.join(' '));
     }
